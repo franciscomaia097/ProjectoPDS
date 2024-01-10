@@ -1,0 +1,34 @@
+@startuml
+'skinparam monochrome true
+'skinparam shadowing false
+
+title UC022 - Arrival of a SNS user to take the vaccine
+
+class Receptionist {
+    +Username: String
+    +Password: String
+}
+
+class System {
+    +promptForAppointmentDetails(): void
+    +verifyDetailsAndConfirmArrival(): void
+    +provideInstructions(): void
+    +notifyReceptionist(): void
+}
+
+class SNSUser {
+    +Name: String
+    +BirthDate: Date
+    +Sex: String
+    +PostalAddress: String
+    +PhoneNumber: String
+    +EmailAddress: String
+    +CitizenCardNumber: String
+    +VaccinationScheduled: Boolean
+}
+
+' Relationships
+Receptionist "1" -- "1" System : initiates >
+System "1" -- "1" SNSUser : registers for arrival >
+
+@enduml

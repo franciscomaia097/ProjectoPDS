@@ -1,0 +1,54 @@
+@startuml
+skinparam monochrome true
+skinparam packageStyle rectangle
+skinparam shadowing false
+
+title Record Vaccine Administration
+
+autonumber
+
+actor Nurse
+participant ":VaccineAdministrationUI" as ui
+participant ":VaccineAdministrationController" as ctrl
+participant Repositories
+participant "vaccineRepo : VaccineRepository" as vaccineRepo
+participant "vaccinationScheduleRepo : VaccinationScheduleRepository" as scheduleRepo
+
+activate Nurse
+
+    Nurse -> ui : record the administration of a vaccine to a user
+    activate ui
+        ui -> ctrl** : loadScheduledVaccinations()
+        activate ctrl
+            ctrl -> Repositories : getVaccinationScheduleRepository()
+            activate Repositories
+                Repositories -> Repositories : vaccinationScheduleRepository()
+                Repositories --> ctrl : scheduleRepo
+            deactivate Repositories
+            ctrl -> scheduleRepo : getScheduledVaccinations()
+            activate scheduleRepo
+                scheduleRepo -> scheduleRepo : getScheduledVaccinations()
+                scheduleRepo --> ctrl : scheduledVaccinations
+            deactivate scheduleRepo
+            ctrl --> ui : scheduledVaccinations
+            ui --> Nurse : displays the scheduled vaccinations
+        deactivate ctrl
+    deactivate ui
+
+    Nurse -> ui : selects the vaccination that occurred
+    activate ui
+        ui -> ctrl : recordVaccineAdministration(selectedVaccination)
+        activate ctrl
+            ctrl -> scheduleRepo : markAdministered(selectedVaccination)
+            activate scheduleRepo
+                scheduleRepo -> scheduleRepo : markAdministered(selectedVaccination)
+                scheduleRepo --> ctrl : success
+            deactivate scheduleRepo
+            ctrl --> ui : success
+        deactivate ctrl
+        ui --> Nurse : notifies success and provides further instructions
+    deactivate ui
+
+deactivate Nurse
+
+@enduml

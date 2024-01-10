@@ -1,0 +1,33 @@
+@startuml
+skinparam monochrome false
+skinparam shadowing false
+
+title UC041 - Record the administration of a vaccine to a SNS user
+
+class Nurse {
+    +Username: String
+    +Password: String
+}
+
+class SNSUser {
+    +Name: String
+    +BirthDate: Date
+    +Sex: String
+    +SNS User number: Int
+    +Vaccinations: String
+    +Allergies: String
+}
+
+
+
+class System {
+    +showSNSUsers(): combo box
+    +showSuccess(): void
+}
+
+' Relationships
+Nurse "1" -- System : registers >
+Nurse "1" -- SNSUser : vaccinates >
+
+
+@enduml

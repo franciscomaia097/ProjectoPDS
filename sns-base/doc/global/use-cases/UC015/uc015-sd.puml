@@ -1,0 +1,39 @@
+@startuml
+skinparam monochrome true
+skinparam packageStyle rectangle
+skinparam shadowing false
+
+title List Employees with Role
+
+autonumber
+
+actor Administrator
+participant ":ListEmployeesUI" as ui
+participant ":ListEmployeesController" as ctrl
+participant Repositories
+participant "employeeRepo : EmployeeRepository" as employeeRepo
+
+activate Administrator
+
+    Administrator -> ui : starts the process of listing employees with a role
+    activate ui
+        ui -> ctrl** : listEmployees(role)
+        activate ctrl
+            ctrl -> Repositories : getEmployeeRepository()
+            activate Repositories
+                Repositories -> Repositories : employeeRepository()
+                Repositories-->ctrl : employeeRepo
+            deactivate Repositories
+            ctrl -> employeeRepo : getEmployeesByRole(role)
+            activate employeeRepo
+                employeeRepo -> employeeRepo : getEmployeesByRole(role)
+                employeeRepo --> ctrl : employeesList
+            deactivate employeeRepo
+            ctrl --> ui : employeesList
+            ui --> Administrator : displays the list of employees with the specified role
+        deactivate ctrl
+    deactivate ui
+
+deactivate Administrator
+
+@enduml

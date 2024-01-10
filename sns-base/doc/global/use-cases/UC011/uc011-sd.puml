@@ -1,0 +1,79 @@
+@startuml
+skinparam monochrome true
+skinparam packageStyle rectangle
+skinparam shadowing false
+
+title Register New Vaccine
+
+autonumber
+
+actor Administrator
+participant ":RegisterNewVaccineUI" as ui
+participant ":RegisterNewVaccineController" as ctrl
+participant Repositories
+participant ":vaccineRepo" as vaccineRepo
+participant ":vaccine" as vaccine
+
+activate Administrator
+
+    Administrator -> ui : starts the process of registering a new vaccine
+    activate ui
+        ui -> ctrl** : create()
+        ui -> ctrl : getExistingVaccines()
+        activate ctrl
+            ctrl -> Repositories : getVaccineRepo()
+            activate Repositories
+                Repositories -> Repositories : vaccineRepo()
+                Repositories-->ctrl : vaccineRepo
+            deactivate Repositories
+            ctrl -> vaccineRepo : getExistingVaccines()
+            activate vaccineRepo
+                vaccineRepo -> vaccineRepo : getExistingVaccines()
+                vaccineRepo --> ctrl : existingVaccines
+            deactivate vaccineRepo
+            ctrl --> ui : existingVaccines
+            ui --> Administrator : shows the existing Vaccines and requests data
+        deactivate ctrl
+    deactivate ui
+
+    Administrator -> ui : fills requested data (name, brand, type)
+    activate ui
+        ui -> ctrl : createVaccine(name, brand, type)
+        activate ctrl
+            ctrl -> Repositories : getVaccineRepo()
+            activate Repositories
+                Repositories -> Repositories : vaccineRepo()
+                Repositories --> ctrl : vaccineRepo
+            deactivate Repositories
+            ctrl -> vaccineRepo : createVaccine(name, brand, type)
+            activate vaccineRepo
+                vaccineRepo -> vaccineRepo : create()
+                activate vaccine
+                    vaccine -> vaccine : localValidation()
+                    vaccine --> vaccineRepo : vaccine
+                deactivate vaccine
+                vaccineRepo -> vaccineRepo : globalValidation(vaccine)
+                vaccineRepo --> ctrl : vaccine
+            deactivate vaccineRepo
+            ctrl --> ui : vaccine
+        deactivate ctrl
+        ui --> Administrator : validates and asks for confirmation
+    deactivate ui
+
+    Administrator -> ui : confirms
+    activate ui
+        ui -> ctrl : save()
+        activate ctrl
+            ctrl -> vaccineRepo : save(vaccine)
+            activate vaccineRepo
+                vaccineRepo -> vaccineRepo : globalValidation(vaccine)
+                vaccineRepo -> vaccineRepo : add(vaccine)
+                vaccineRepo --> ctrl : success
+            deactivate vaccineRepo
+            ctrl --> ui : success
+        deactivate ctrl
+        ui --> Administrator : records the information and notifies the success of the operation
+    deactivate ui
+deactivate Administrator
+
+@enduml

@@ -1,0 +1,79 @@
+@startuml
+skinparam monochrome true
+skinparam packageStyle rectangle
+skinparam shadowing false
+
+title Register SNS User
+
+autonumber
+
+actor Administrator
+participant ":RegisterSNSUserUI" as ui
+participant ":RegisterSNSUserController" as ctrl
+participant Repositories
+participant "snsUserRepo : SNSUserRepository" as snsUserRepo
+participant "snsUser : SNSUser" as snsUser
+
+activate Administrator
+
+    Administrator -> ui : starts the process of registering a new SNS user
+    activate ui
+        ui -> ctrl** : create()
+        ui -> ctrl : getSNSUser(username)
+        activate ctrl
+            ctrl -> Repositories : getSNSUserRepository()
+            activate Repositories
+                Repositories -> Repositories : snsUserRepository()
+                Repositories-->ctrl : snsUserRepo
+            deactivate Repositories
+            ctrl -> snsUserRepo : getSNSUserByUsername(username)
+            activate snsUserRepo
+                snsUserRepo -> snsUserRepo : getSNSUserByUsername(username)
+                snsUserRepo --> ctrl : existingSNSUser
+            deactivate snsUserRepo
+            ctrl --> ui : existingSNSUser
+            ui --> Administrator : shows existing SNS User details or requests data
+        deactivate ctrl
+    deactivate ui
+
+    Administrator -> ui : fills requested data (username)
+    activate ui
+        ui -> ctrl : createSNSUser(username)
+        activate ctrl
+            ctrl -> Repositories : getSNSUserRepository()
+            activate Repositories
+                Repositories -> Repositories : snsUserRepository()
+                Repositories --> ctrl : snsUserRepo
+            deactivate Repositories
+            ctrl -> snsUserRepo : createSNSUser(username)
+            activate snsUserRepo
+                snsUserRepo -> snsUserRepo : create()
+                activate snsUser
+                    snsUser -> snsUser : localValidation()
+                    snsUser --> snsUserRepo : snsUser
+                deactivate snsUser
+                snsUserRepo -> snsUserRepo : globalValidation(snsUser)
+                snsUserRepo --> ctrl : snsUser
+            deactivate snsUserRepo
+            ctrl --> ui : snsUser
+        deactivate ctrl
+        ui --> Administrator : validates and asks for confirmation
+    deactivate ui
+
+    Administrator -> ui : confirms
+    activate ui
+        ui -> ctrl : save()
+        activate ctrl
+            ctrl -> snsUserRepo : save(snsUser)
+            activate snsUserRepo
+                snsUserRepo -> snsUserRepo : globalValidation(snsUser)
+                snsUserRepo -> snsUserRepo : add(snsUser)
+                snsUserRepo --> ctrl : success
+            deactivate snsUserRepo
+            ctrl --> ui : success
+        deactivate ctrl
+        ui --> Administrator : records the information and notifies the success of the operation
+    deactivate ui
+deactivate Administrator
+
+@enduml

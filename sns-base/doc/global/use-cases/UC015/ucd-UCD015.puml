@@ -1,0 +1,32 @@
+@startuml
+'skinparam monochrome true
+'skinparam shadowing false
+
+title UC015 - List employees with a role
+
+class Administrator {
+    +Username: String
+    +Password: String
+}
+
+class SNS {
+    +Name: String
+}
+
+class System {
+    +showEmployeesWithRole(): List<Employee>
+}
+
+class Employee {
+    +Name: String
+    +Role: String
+}
+
+' Relationships
+Administrator "1" -- "                    1" System : uses >
+SNS "                1" -- "1" System : uses >
+System "1" -- "0" Employee : provides >
+
+
+
+@enduml

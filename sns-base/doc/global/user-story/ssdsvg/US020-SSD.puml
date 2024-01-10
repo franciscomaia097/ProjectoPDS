@@ -1,0 +1,29 @@
+@startuml
+skinparam monochrome true
+skinparam packageStyle rectangle
+skinparam shadowing false
+
+title System Sequence Diagram (SSD)
+
+autonumber
+actor Receptionist
+participant ":System" as System
+
+activate Receptionist
+    Receptionist -> System : initiates the process of registering a new SNS user
+    activate System
+        System --> Receptionist : asks for SNS user information
+    deactivate System
+
+    Receptionist -> System : enters the required information
+    activate System
+        System --> Receptionist : validates the data and requests confirmation
+    deactivate System
+
+    Receptionist -> System : confirms
+    activate System
+        System --> Receptionist : records the information and notifies the success of the operation
+    deactivate System
+deactivate Receptionist
+
+@enduml

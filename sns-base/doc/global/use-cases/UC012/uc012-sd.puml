@@ -1,0 +1,39 @@
+@startuml
+skinparam monochrome true
+skinparam packageStyle rectangle
+skinparam shadowing false
+
+title List All Vaccines
+
+autonumber
+
+actor Administrator
+participant ":ListAllVaccinesUI" as ui
+participant ":ListAllVaccinesController" as ctrl
+participant Repositories
+participant "vaccineRepo : VaccineRepository" as vaccineRepo
+
+activate Administrator
+
+    Administrator -> ui : starts the process of listing all vaccines
+    activate ui
+        ui -> ctrl** : listAllVaccines()
+        activate ctrl
+            ctrl -> Repositories : getVaccineRepository()
+            activate Repositories
+                Repositories -> Repositories : vaccineRepository()
+                Repositories-->ctrl : vaccineRepo
+            deactivate Repositories
+            ctrl -> vaccineRepo : getAllVaccines()
+            activate vaccineRepo
+                vaccineRepo -> vaccineRepo : getAllVaccines()
+                vaccineRepo --> ctrl : vaccinesList
+            deactivate vaccineRepo
+            ctrl --> ui : vaccinesList
+            ui --> Administrator : displays the list of all vaccines
+        deactivate ctrl
+    deactivate ui
+
+deactivate Administrator
+
+@enduml

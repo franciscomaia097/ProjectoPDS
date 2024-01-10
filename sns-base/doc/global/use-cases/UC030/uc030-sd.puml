@@ -1,0 +1,65 @@
+@startuml
+skinparam monochrome true
+skinparam packageStyle rectangle
+skinparam shadowing false
+
+title SNS User Scheduling Vaccination
+
+autonumber
+
+actor SNSUser
+participant ":ScheduleVaccinationAppUI" as ui
+participant ":ScheduleVaccinationAppController" as ctrl
+participant Repositories
+participant "vaccineRepo : VaccineRepository" as vaccineRepo
+participant "vaccinationScheduleRepo : VaccinationScheduleRepository" as scheduleRepo
+participant "vaccinationSchedule : VaccinationSchedule" as schedule
+
+activate SNSUser
+
+    SNSUser -> ui : opens the application to schedule a vaccination
+    activate ui
+        ui -> ctrl** : loadAvailableVaccines()
+        activate ctrl
+            ctrl -> Repositories : getVaccineRepository()
+            activate Repositories
+                Repositories -> Repositories : vaccineRepository()
+                Repositories --> ctrl : vaccineRepo
+            deactivate Repositories
+            ctrl -> vaccineRepo : getAvailableVaccines()
+            activate vaccineRepo
+                vaccineRepo -> vaccineRepo : getAvailableVaccines()
+                vaccineRepo --> ctrl : availableVaccines
+            deactivate vaccineRepo
+            ctrl --> ui : availableVaccines
+            ui --> SNSUser : displays the available vaccines
+        deactivate ctrl
+    deactivate ui
+
+    SNSUser -> ui : selects a vaccine and schedules a date
+    activate ui
+        ui -> ctrl : scheduleVaccination(vaccine, date)
+        activate ctrl
+            ctrl -> Repositories : getVaccinationScheduleRepository()
+            activate Repositories
+                Repositories -> Repositories : vaccinationScheduleRepository()
+                Repositories --> ctrl : scheduleRepo
+            deactivate Repositories
+            ctrl -> scheduleRepo : createVaccinationSchedule(vaccine, date)
+            activate scheduleRepo
+                scheduleRepo -> scheduleRepo : create()
+                activate schedule
+                    schedule -> schedule : localValidation()
+                    schedule --> scheduleRepo : schedule
+                deactivate schedule
+                scheduleRepo -> scheduleRepo : globalValidation(schedule)
+                scheduleRepo --> ctrl : schedule
+            deactivate scheduleRepo
+            ctrl --> ui : success
+        deactivate ctrl
+        ui --> SNSUser : notifies success and provides confirmation
+    deactivate ui
+
+deactivate SNSUser
+
+@enduml

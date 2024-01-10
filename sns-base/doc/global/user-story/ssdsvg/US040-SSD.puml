@@ -1,0 +1,21 @@
+@startuml
+skinparam monochrome true
+skinparam packageStyle rectangle
+skinparam shadowing false
+
+title System Sequence Diagram (SSD)
+
+autonumber
+
+actor Nurse
+participant ":System" as System
+
+activate Nurse
+    Nurse -> System : runs the program to check the patients inside the waiting room
+
+activate System
+    System --> Nurse : show all the patients in the waiting room
+deactivate System
+deactivate Nurse
+
+@enduml

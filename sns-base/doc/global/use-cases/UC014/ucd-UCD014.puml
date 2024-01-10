@@ -1,0 +1,35 @@
+@startuml
+'skinparam monochrome true
+'skinparam shadowing false
+
+title UC014 - Register employee
+
+class Administrator {
+    +Username: String
+    +Password: String
+}
+
+class SNS {
+    +Name: String
+}
+
+class System {
+    +showEmployeeList(): List<Employee>
+    +validateData(): Boolean
+    +recordInformation(): void
+    +notifySuccess(): void
+}
+
+class Employee {
+    +Name: String
+    +JobDescription: String
+    +SNSNumber: String
+}
+
+' Relationships
+Administrator "1" -- "1" System : uses >
+SNS "1" -- "1" System : wants to know >
+System "1" -- "0" Employee : registers >
+
+
+@enduml

@@ -1,0 +1,21 @@
+@startuml
+skinparam monochrome true
+skinparam packageStyle rectangle
+skinparam shadowing false
+
+title System Sequence Diagram (SSD)
+
+autonumber
+
+actor Receptionist
+participant ":System" as System
+
+activate Receptionist
+    Receptionist -> System : starts registration process is efficient to minimize waiting times for SNS users.
+
+activate System
+    System --> Receptionist : provide training and support for receptionists to effectively use the arrival registration interface.
+deactivate System
+deactivate Receptionist
+
+@enduml

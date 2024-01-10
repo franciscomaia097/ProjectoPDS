@@ -1,0 +1,38 @@
+@startuml
+'skinparam monochrome true
+'skinparam shadowing false
+
+title UC012 - List all vaccines
+
+class Administrator {
+    +Username: String
+    +Password: String
+}
+
+class SNSUser {
+    +Username: String
+}
+
+class System {
+    +showVaccineList(): List<Vaccine>
+}
+
+class Vaccine {
+    +ID: Int
+    +Name: String
+    +Brand: String
+    +Type: VaccineType
+}
+
+class Order {
+    +  grouped by type
+    +  listed alphabetically by name
+}
+
+' Relationships
+Administrator "1" -- "1" System : uses >
+SNSUser "1" -- "1" System : uses >
+System "1" -- "1" Vaccine : provides >
+System "1" -- "1" Vaccine : provides >
+System "1" -- "1" Order : ordered by >
+@enduml

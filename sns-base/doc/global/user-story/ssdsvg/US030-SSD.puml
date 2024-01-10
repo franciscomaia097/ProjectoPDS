@@ -1,0 +1,37 @@
+@startuml
+skinparam monochrome true
+skinparam packageStyle rectangle
+skinparam shadowing false
+
+title System Sequence Diagram (SSD)
+
+autonumber
+actor User
+participant ":System" as System
+
+activate User
+    User -> System : logs into the system
+    activate System
+        System --> User : validates the users name and passoword
+    deactivate System
+
+    User -> System : begins process of scheduling a vaccination
+    activate System
+        System --> User : asks for date, vaccination center and time
+    deactivate System
+
+    User -> System : inputs required information
+    activate System
+        System --> User : using the information checks if it can be scheduled
+    deactivate System
+
+    User ->System : confirms scheduling
+    activate System
+            System --> User : send out confimation, with all the information via email and SMS
+     deactivate System
+
+
+
+deactivate User
+
+@enduml

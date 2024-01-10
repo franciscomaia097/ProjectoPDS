@@ -1,0 +1,79 @@
+@startuml
+skinparam monochrome true
+skinparam packageStyle rectangle
+skinparam shadowing false
+
+title Register Vaccination Center
+
+autonumber
+
+actor Administrator
+participant ":RegisterVaccinationCenterUI" as ui
+participant ":RegisterVaccinationCenterController" as ctrl
+participant Repositories
+participant "vaccCenterRepo : VaccinationCenterRepository" as vaccCenterRepo
+participant "vaccCenter : VaccinationCenter" as vaccCenter
+
+activate Administrator
+
+    Administrator -> ui : starts the process of registering a new vaccination center
+    activate ui
+        ui -> ctrl** : create()
+        ui -> ctrl : getExistingVaccinationCenters()
+        activate ctrl
+            ctrl -> Repositories : getVaccinationCenterRepository()
+            activate Repositories
+                Repositories -> Repositories : vaccinationCenterRepository()
+                Repositories-->ctrl : vaccCenterRepo
+            deactivate Repositories
+            ctrl -> vaccCenterRepo : getExistingVaccinationCenters()
+            activate vaccCenterRepo
+                vaccCenterRepo -> vaccCenterRepo : getExistingVaccinationCenters()
+                vaccCenterRepo --> ctrl : existingVaccinationCenters
+            deactivate vaccCenterRepo
+            ctrl --> ui : existingVaccinationCenters
+            ui --> Administrator : shows the existing Vaccination Centers and requests data
+        deactivate ctrl
+    deactivate ui
+
+    Administrator -> ui : fills requested data (name, location, contact info, operating hours)
+    activate ui
+        ui -> ctrl : createVaccinationCenter(name, location, contactInfo, operatingHours)
+        activate ctrl
+            ctrl -> Repositories : getVaccinationCenterRepository()
+            activate Repositories
+                Repositories -> Repositories : vaccinationCenterRepository()
+                Repositories --> ctrl : vaccCenterRepo
+            deactivate Repositories
+            ctrl -> vaccCenterRepo : createVaccinationCenter(name, location, contactInfo, operatingHours)
+            activate vaccCenterRepo
+                vaccCenterRepo -> vaccCenterRepo : create()
+                activate vaccCenter
+                    vaccCenter -> vaccCenter : localValidation()
+                    vaccCenter --> vaccCenterRepo : vaccCenter
+                deactivate vaccCenter
+                vaccCenterRepo -> vaccCenterRepo : globalValidation(vaccCenter)
+                vaccCenterRepo --> ctrl : vaccCenter
+            deactivate vaccCenterRepo
+            ctrl --> ui : vaccCenter
+        deactivate ctrl
+        ui --> Administrator : validates and asks for confirmation
+    deactivate ui
+
+    Administrator -> ui : confirms
+    activate ui
+        ui -> ctrl : save()
+        activate ctrl
+            ctrl -> vaccCenterRepo : save(vaccCenter)
+            activate vaccCenterRepo
+                vaccCenterRepo -> vaccCenterRepo : globalValidation(vaccCenter)
+                vaccCenterRepo -> vaccCenterRepo : add(vaccCenter)
+                vaccCenterRepo --> ctrl : success
+            deactivate vaccCenterRepo
+            ctrl --> ui : success
+        deactivate ctrl
+        ui --> Administrator : records the information and notifies the success of the operation
+    deactivate ui
+deactivate Administrator
+
+@enduml

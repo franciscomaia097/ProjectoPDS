@@ -1,0 +1,61 @@
+@startuml
+skinparam monochrome true
+skinparam packageStyle rectangle
+skinparam shadowing false
+
+title Receptionist Processing Arrival and Waiting List
+
+autonumber
+
+actor Receptionist
+participant ":VaccinationArrivalUI" as ui
+participant ":VaccinationArrivalController" as ctrl
+participant Repositories
+participant "vaccinationScheduleRepo : VaccinationScheduleRepository" as scheduleRepo
+participant "waitingListRepo : WaitingListRepository" as waitingListRepo
+participant "vaccinationSchedule : VaccinationSchedule" as schedule
+participant "waitingUser : WaitingUser" as waitingUser
+
+activate Receptionist
+
+    Receptionist -> ui : processes the arrival of an SNS user
+    activate ui
+        ui -> ctrl** : loadScheduledVaccinations()
+        activate ctrl
+            ctrl -> Repositories : getVaccinationScheduleRepository()
+            activate Repositories
+                Repositories -> Repositories : vaccinationScheduleRepository()
+                Repositories --> ctrl : scheduleRepo
+            deactivate Repositories
+            ctrl -> scheduleRepo : getScheduledVaccinations()
+            activate scheduleRepo
+                scheduleRepo -> scheduleRepo : getScheduledVaccinations()
+                scheduleRepo --> ctrl : scheduledVaccinations
+            deactivate scheduleRepo
+            ctrl --> ui : scheduledVaccinations
+            ui --> Receptionist : displays the scheduled vaccinations
+        deactivate ctrl
+    deactivate ui
+
+    Receptionist -> ui : selects a scheduled vaccination
+    activate ui
+        ui -> ctrl : processVaccinationArrival(selectedVaccination)
+        activate ctrl
+            ctrl -> scheduleRepo : markArrival(selectedVaccination)
+            activate scheduleRepo
+                scheduleRepo -> scheduleRepo : markArrival(selectedVaccination)
+                scheduleRepo --> ctrl : success
+            deactivate scheduleRepo
+            ctrl -> waitingListRepo : addToWaitingList(selectedVaccination, waitingUser)
+            activate waitingListRepo
+                waitingListRepo -> waitingListRepo : addToWaitingList(selectedVaccination, waitingUser)
+                waitingListRepo --> ctrl : success
+            deactivate waitingListRepo
+            ctrl --> ui : success
+        deactivate ctrl
+        ui --> Receptionist : notifies success and sends him to the wait queue
+    deactivate ui
+
+deactivate Receptionist
+
+@enduml

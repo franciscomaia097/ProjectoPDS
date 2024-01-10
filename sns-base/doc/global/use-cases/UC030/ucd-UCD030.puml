@@ -1,0 +1,28 @@
+@startuml
+'skinparam monochrome true
+'skinparam shadowing false
+
+title UC030 - As SNS user use the application to schedule a vaccination
+
+class SNSUser {
+    +Username: String
+    +Password: String
+    +PersonalInfo: String
+}
+
+class Application {
+    +displayScheduleOption(): void
+    +selectTimeSlot(): void
+    +confirmScheduling(): void
+    +provideConfirmationMessage(): void
+    +informUser(): void
+}
+
+' Relationships
+SNSUser "1" -- "1" Application : logs into >
+Application "1" -- "1" Application : displayScheduleOption()
+SNSUser "1" -- "1" Application : selectTimeSlot()
+Application "1" -- "1" Application : confirmScheduling()
+Application "1" -- "1" SNSUser : provideConfirmationMessage()
+
+@enduml

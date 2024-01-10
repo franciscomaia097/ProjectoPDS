@@ -1,0 +1,32 @@
+@startuml
+'skinparam monochrome true
+'skinparam shadowing false
+
+title UC010 - Specify a new vaccine type
+
+
+class Vaccine {
+    +ID: Int
+    +Nome: String
+}
+
+class VaccineType{
+    +Code: Int
+    +ShortDesc: String
+}
+
+class VaccineTech{
+    +Name: String
+    +Description: String
+}
+
+class Brand {
+    +Nome: String
+}
+
+' Relationships
+VaccineTech "1   "-"    *" VaccineType : is of <
+VaccineType "1   "-"    *"Vaccine
+Brand "1   "-"    *" Vaccine : manufactures <
+
+@enduml

@@ -1,0 +1,37 @@
+@startuml
+skinparam monochrome false
+skinparam shadowing false
+
+title UC040 - Consult users in a waiting room
+
+class Nurse {
+    +Username: String
+    +Password: String
+}
+
+class SNSUser {
+    +Name: String
+    +BirthDate: Date
+    +Sex: String
+    +SNS User number: Int
+    +Vaccinations: String
+    +Allergies: String
+}
+
+class Receptionist {
+    +Username: String
+    +Password: String
+}
+
+
+class System {
+    +showInformation(): void
+}
+
+' Relationships
+Nurse "1" -- System : uses >
+Receptionist "1" -- System : registers >
+SNSUser "1" -- Receptionist : provides info >
+
+
+@enduml

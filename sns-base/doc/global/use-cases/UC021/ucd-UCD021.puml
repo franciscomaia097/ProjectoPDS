@@ -1,0 +1,36 @@
+@startuml
+'skinparam monochrome true
+'skinparam shadowing false
+
+title UC021 - Schedule a vaccination
+
+class Receptionist {
+    +Username: String
+    +Password: String
+}
+
+class System {
+    +displayAvailableTimeSlots(): void
+    +selectTimeSlot(): void
+    +confirmScheduling(): void
+    +notifyUser(): void
+    +informReceptionist(): void
+}
+
+class User {
+    +Name: String
+    +BirthDate: Date
+    +Sex: String
+    +PostalAddress: String
+    +PhoneNumber: String
+    +EmailAddress: String
+    +CitizenCardNumber: String
+    +VaccinationScheduled: Boolean
+}
+
+' Relationships
+Receptionist "1" -- "1" System : initiates >
+System "1" -- "1" User : schedules for >
+System "1" -- "1" User : notifies >
+
+@enduml

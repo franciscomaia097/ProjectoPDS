@@ -1,0 +1,43 @@
+@startuml
+'skinparam monochrome true
+'skinparam shadowing false
+
+
+title UC011 - Register vaccine
+
+class Administrator {
+    +Username: String
+    +Password: String
+}
+
+
+class Vaccine {
+    +ID: Int
+    +Name: String
+    +Brand: String
+    +Type: VaccineType
+}
+
+class VaccineType {
+    +Code: Int
+    +ShortDesc: String
+}
+
+class Brand {
+    +Name: String
+}
+
+class System {
+    +validateData(): Boolean
+    +recordInformation(): void
+    +notifySuccess(): void
+}
+
+' Relationships
+Administrator "1" -- "1" System : uses >
+System "1" -- "1" Vaccine : register >
+Vaccine "1" -- "0..1" Brand : manufactures <
+Vaccine "1" -- "1" VaccineType : is of >
+
+
+@enduml

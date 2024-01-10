@@ -1,0 +1,26 @@
+@startuml
+skinparam monochrome true
+skinparam packageStyle rectangle
+skinparam shadowing false
+
+title System Sequence Diagram (SSD)
+
+autonumber
+
+actor Nurse
+participant ":System" as System
+
+activate Nurse
+    Nurse -> System : initiates the process to record vaccine administration for an SNS user.
+
+activate System
+    System --> Nurse : provides a list of predefined vaccines for the nurse to select.
+    deactivate System
+
+    Nurse -> System : selects the administered vaccine and inputs dosage, the lot number  and additional notes.
+activate System
+    System --> Nurse : updates the SNS user's vaccination record with the administered vaccine details.
+deactivate System
+deactivate Nurse
+
+@enduml

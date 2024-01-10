@@ -1,0 +1,40 @@
+@startuml
+skinparam monochrome true
+skinparam packageStyle rectangle
+skinparam shadowing false
+
+title Receptionist Checks Waiting Room
+
+autonumber
+
+actor Receptionist
+participant ":WaitingRoomCheckUI" as ui
+participant ":WaitingRoomCheckController" as ctrl
+participant Repositories
+participant "waitingListRepo : WaitingListRepository" as waitingListRepo
+participant "waitingUser : WaitingUser" as waitingUser
+
+activate Receptionist
+
+    Receptionist -> ui : checks the list of users in the waiting room
+    activate ui
+        ui -> ctrl** : loadWaitingList()
+        activate ctrl
+            ctrl -> Repositories : getWaitingListRepository()
+            activate Repositories
+                Repositories -> Repositories : waitingListRepository()
+                Repositories --> ctrl : waitingListRepo
+            deactivate Repositories
+            ctrl -> waitingListRepo : getWaitingList()
+            activate waitingListRepo
+                waitingListRepo -> waitingListRepo : getWaitingList()
+                waitingListRepo --> ctrl : waitingList
+            deactivate waitingListRepo
+            ctrl --> ui : waitingList
+            ui --> Receptionist : displays the list of users in the waiting room
+        deactivate ctrl
+    deactivate ui
+
+deactivate Receptionist
+
+@enduml

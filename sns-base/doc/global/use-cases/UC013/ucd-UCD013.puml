@@ -1,0 +1,42 @@
+@startuml
+'skinparam monochrome true
+'skinparam shadowing false
+
+title UC013 - Register vaccination center
+
+class Administrator {
+    +Username: String
+    +Password: String
+}
+
+class System {
+    +validateData(): Boolean
+    +recordInformation(): void
+    +notifySuccess(): void
+}
+
+class VaccinationCenter {
+    +Name: String
+    +Location: String
+    +ContactInformation: String
+    +OperatingHours: String
+}
+
+class Pandemic {
+    +Name: String
+}
+
+class Vaccine {
+  +ID: Int
+  +Name: String
+  +Brand: String
+  +Type: VaccineType
+}
+
+' Relationships
+Administrator "1" -- "1" System : uses >
+System "1" -- "0" VaccinationCenter : registers >
+VaccinationCenter "1" -- "0" Vaccine : uses >
+Vaccine "1" -- "0" Pandemic : fights >
+
+@enduml

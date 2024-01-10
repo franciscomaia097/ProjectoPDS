@@ -1,0 +1,19 @@
+@startuml
+skinparam monochrome true
+skinparam packageStyle rectangle
+skinparam shadowing false
+
+title System Sequence Diagram (SSD)
+
+autonumber
+actor Administrator
+participant ":System" as System
+
+activate Administrator
+    Administrator -> System : selects a specific role
+    activate System
+        System --> Administrator :processes the request and retrieves the list of employees with the selected role.
+    deactivate System
+deactivate Administrator
+
+@enduml

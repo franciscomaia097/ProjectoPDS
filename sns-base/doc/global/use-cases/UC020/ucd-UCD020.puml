@@ -1,0 +1,34 @@
+@startuml
+skinparam monochrome false
+skinparam shadowing false
+
+title UC020 - Register SNS User
+
+class Receptionist {
+    +Username: String
+    +Password: String
+}
+
+class SNSUser {
+    +Name: String
+    +BirthDate: Date
+    +Sex: String
+    +PostalAddress: String
+    +PhoneNumber: String
+    +EmailAddress: String
+    +CitizenCardNumber: String
+    +SNSUserNumber: String
+}
+
+class System {
+    +validateData(): Boolean
+    +recordInformation(): void
+    +notifySuccess(): void
+}
+
+' Relationships
+Receptionist "1" -- "1" System : uses >
+System "1" -- "1" SNSUser : registers >
+
+
+@enduml
