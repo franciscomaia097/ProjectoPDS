@@ -11,6 +11,8 @@ import pt.org.upskill.ui.repository.Repositories;
 import pt.org.upskill.ui.repository.VaccineRepository;
 import pt.org.upskill.ui.repository.VaccineTypeRepository;
 
+import java.util.List;
+
 public class VaccineController {
     VaccineRepository vaccineRepository = Repositories.getInstance().vaccineRepository();
     VaccineTypeRepository vaccineTypeRepository = Repositories.getInstance().vaccineTypeRepository();
@@ -38,4 +40,7 @@ public class VaccineController {
     }
 
 
+    public List<Vaccine> getVaccineList() {
+        return vaccineRepository.getVacineList();
+    }
 }

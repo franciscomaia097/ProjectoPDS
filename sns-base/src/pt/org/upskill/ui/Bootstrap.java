@@ -74,10 +74,10 @@ public class Bootstrap implements Runnable {
         menu.addPermission((Role) roleRepository.roleByName(RoleRepository.ROLE_ADMIN));
         menu = new Menu(menuLogin, 3, "Register Vaccine Type", new RegisterVaccineTypeUI());
         menu.addPermission((Role) roleRepository.roleByName(RoleRepository.ROLE_ADMIN));
-        menu = new Menu(menuLogin, 4, "Register Vaccine", new RegisterVaccineUI());
+        menu = new Menu(menuLogin, 5, "Register Vaccine", new RegisterVaccineUI());
         menu.addPermission((Role) roleRepository.roleByName(RoleRepository.ROLE_ADMIN));
-        menu = new Menu(menuLogin, 5, "Register Vaccination Center", new RegisterVaccinationCenterUI());
-        //menu.addPermission((Role) roleRepository.roleByName(ROLE_ADMIN));
+        menu = new Menu(menuLogin, 6, "Register Vaccination Center", new RegisterVaccinationCenterUI());
+        menu.addPermission((Role) roleRepository.roleByName(RoleRepository.ROLE_ADMIN));
         //menu = new Menu(menuLogin, 11, "List Employees With Role", new ListEmployeesWithRoleUI());
         //menu.addPermission((Role) roleRepository.roleByName(ROLE_ADMIN));
         menu = new Menu(menuLogin, 12, "List Vaccine Technologies", new ListVaccineTechsUI());
@@ -88,8 +88,8 @@ public class Bootstrap implements Runnable {
         menu.addPermission((Role) roleRepository.roleByName(RoleRepository.ROLE_ADMIN));
         menu = new Menu(menuLogin, 15, "List vacination Center", new ListVacineCenterUI());
         menu.addPermission((Role) roleRepository.roleByName(RoleRepository.ROLE_ADMIN));
-        //menu = new Menu(menuLogin, 14, "List Vaccines", new ListVaccinesUI());
-        //menu.addPermission((Role) roleRepository.roleByName(ROLE_ADMIN));
+        menu = new Menu(menuLogin, 16, "List Vaccines", new ListVaccinesUI());
+        menu.addPermission((Role) roleRepository.roleByName(RoleRepository.ROLE_ADMIN));
 
         //Receptionist
         menu = new Menu(menuLogin, 1, "Register SNS User", new RegisterUserUI());

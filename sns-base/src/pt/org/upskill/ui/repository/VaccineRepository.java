@@ -51,26 +51,37 @@ public class VaccineRepository implements Persistable {
 
     @Override
     public boolean save(Object object) {
-        /*
+
         if (validateSave(object)) {
-            vaccineTechList.add((VaccineTech) object);
+            vaccineList.add((Vaccine) object);
             return true;
         }
 
-         */
+
         return false;
     }
 
     @Override
     public boolean delete(Object object) {
-        /*
+
         if (validateDelete(object)) {
-            vaccineTechList.remove(object);
+            vaccineList.remove(object);
             return true;
         }
-        */
+
         return false;
 
+    }
+
+    public List<Vaccine> getVacineList() {
+        return new ArrayList<>(vaccineList);
+    }
+
+    private Boolean validateDelete(Object object) {
+        return true;
+    }
+    private Boolean validateSave(Object object) {
+        return true;
     }
 /*
     public List<VaccineTech> vaccineTechList() {

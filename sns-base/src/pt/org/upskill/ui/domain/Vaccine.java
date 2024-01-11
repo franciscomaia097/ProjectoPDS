@@ -13,7 +13,27 @@ public class Vaccine {
         this.brand = brand;
     }
 
-    public String name() {
+    public String getName() {
         return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public VaccineType getVaccineType() {
+        return vaccineType;
+    }
+
+    public void setVaccineType(VaccineType vaccineType) {
+        this.vaccineType = vaccineType;
+    }
+
+    public Brand getBrand() {
+        return brand;
+    }
+
+    public void setBrand(Brand brand) {
+        this.brand = brand;
     }
 }
