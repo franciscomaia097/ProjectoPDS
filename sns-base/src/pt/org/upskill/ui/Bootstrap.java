@@ -84,6 +84,10 @@ public class Bootstrap implements Runnable {
         menu.addPermission((Role) roleRepository.roleByName(RoleRepository.ROLE_ADMIN));
         menu = new Menu(menuLogin, 13, "List Vaccine Types", new ListVaccineTypesUI());
         menu.addPermission((Role) roleRepository.roleByName(RoleRepository.ROLE_ADMIN));
+        menu = new Menu(menuLogin, 14, "Create vacination Center", new RegisterVaccinationCenterUI());
+        menu.addPermission((Role) roleRepository.roleByName(RoleRepository.ROLE_ADMIN));
+        menu = new Menu(menuLogin, 15, "List vacination Center", new ListVacineCenterUI());
+        menu.addPermission((Role) roleRepository.roleByName(RoleRepository.ROLE_ADMIN));
         //menu = new Menu(menuLogin, 14, "List Vaccines", new ListVaccinesUI());
         //menu.addPermission((Role) roleRepository.roleByName(ROLE_ADMIN));
 
