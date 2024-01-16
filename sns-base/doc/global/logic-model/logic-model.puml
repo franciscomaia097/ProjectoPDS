@@ -119,23 +119,23 @@ ENTITY RegisterVacination {
 
 
 
-VaccinationCenter "1" -- "*" Nurse
-VaccinationCenter "1" -- "*" Receptionist
-VaccineAppointment "0..1" -- "1" CheckIn
+VaccinationCenter "*" -- "*" Nurse
+VaccinationCenter "*" -- "*" Receptionist
+VaccineAppointment "0..1" -- "0..1" CheckIn
 VaccineAppointment "*" -- "1" SNSUser
 VaccineAppointment "*" -- "1" VaccinationCenter
 VaccinationCall "*" -- "1" Nurse
 VaccinationCall "1" -- "1" Local
 VaccinationCall "1" -- "1" RegisterVacination
 RegisterVacination "1" -- "1" AdverseSymptomsRegister
-RegisterVacination "1" -- "1" Vaccine
+RegisterVacination "1" -- "1" Lot
 CheckIn "0..1" -- "1" Receptionist
 CheckIn "0" -- "1" Local
-CheckIn "0" -- "1" VaccinationCall
-Vaccine "*" -- "1" Lot
+CheckIn "1" -- "0..1" VaccinationCall
+Lot "*" -- "1" Vaccine
 Vaccine "*" -- "1" VaccineType
 Local "0..1" -- "0..1" WaitingRoom
-Local "0..1" -- "0..1" VaccinationRoom
+Local "0..1" -- "0..1" VacinationRoom
 Local "0..1" -- "0..1" RecoveryRoom
 HealthCenter "0..1" -- "0..1" VaccinationCenter
 
