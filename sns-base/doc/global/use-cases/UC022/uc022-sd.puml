@@ -18,24 +18,6 @@ participant "waitingUser : WaitingUser" as waitingUser
 
 activate Receptionist
 
-    Receptionist -> ui : processes the arrival of an SNS user
-    activate ui
-        ui -> ctrl** : loadScheduledVaccinations()
-        activate ctrl
-            ctrl -> Repositories : getVaccinationScheduleRepository()
-            activate Repositories
-                Repositories -> Repositories : vaccinationScheduleRepository()
-                Repositories --> ctrl : scheduleRepo
-            deactivate Repositories
-            ctrl -> scheduleRepo : getScheduledVaccinations()
-            activate scheduleRepo
-                scheduleRepo -> scheduleRepo : getScheduledVaccinations()
-                scheduleRepo --> ctrl : scheduledVaccinations
-            deactivate scheduleRepo
-            ctrl --> ui : scheduledVaccinations
-            ui --> Receptionist : displays the scheduled vaccinations
-        deactivate ctrl
-    deactivate ui
 
     Receptionist -> ui : selects a scheduled vaccination
     activate ui

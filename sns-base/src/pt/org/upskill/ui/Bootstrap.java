@@ -68,8 +68,8 @@ public class Bootstrap implements Runnable {
         menu = new Menu(Context.getInstance().mainMenu(), 9,"About", new AboutUI());
 
         //Admin
-        // menu = new Menu(menuLogin, 1, "Register User", new CreateUserUI());
-        //menu.addPermission((Role) roleRepository.roleByName(ROLE_ADMIN));
+         menu = new Menu(menuLogin, 1, "Register Employe", new CreateUserUI());
+        menu.addPermission((Role) roleRepository.roleByName(RoleRepository.ROLE_ADMIN));
         menu = new Menu(menuLogin, 2, "Register Vaccine Technology", new RegisterVaccineTechUI());
         menu.addPermission((Role) roleRepository.roleByName(RoleRepository.ROLE_ADMIN));
         menu = new Menu(menuLogin, 3, "Register Vaccine Type", new RegisterVaccineTypeUI());
@@ -96,8 +96,8 @@ public class Bootstrap implements Runnable {
         menu.addPermission((Role) roleRepository.roleByName(RoleRepository.ROLE_RECEPTIONIST));
         menu = new Menu(menuLogin, 2, "Schedule Vaccination", new ScheduleVaccinationOnBehalfOfUserUI());
         menu.addPermission((Role) roleRepository.roleByName(RoleRepository.ROLE_RECEPTIONIST));
-        //menu = new Menu(menuLogin, 3, "Register SNS User Arrival", new RegisterUserArrivalUI());
-        //menu.addPermission((Role) roleRepository.roleByName(ROLE_RECEPTIONIST));
+        menu = new Menu(menuLogin, 3, "Register SNS User Arrival", new RegisterUserArrivalUI());
+        menu.addPermission((Role) roleRepository.roleByName(RoleRepository.ROLE_RECEPTIONIST));
 
         //SNS USer
         //menu = new Menu(menuLogin, 1, "Schedule Vaccination", new ScheduleVaccinationUI());

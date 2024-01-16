@@ -17,24 +17,6 @@ participant "vaccinationSchedule : VaccinationSchedule" as schedule
 
 activate SNSUser
 
-    SNSUser -> ui : starts the process of scheduling a vaccination
-    activate ui
-        ui -> ctrl** : loadVaccines()
-        activate ctrl
-            ctrl -> Repositories : getVaccineRepository()
-            activate Repositories
-                Repositories -> Repositories : vaccineRepository()
-                Repositories --> ctrl : vaccineRepo
-            deactivate Repositories
-            ctrl -> vaccineRepo : getAllVaccines()
-            activate vaccineRepo
-                vaccineRepo -> vaccineRepo : getAllVaccines()
-                vaccineRepo --> ctrl : vaccineList
-            deactivate vaccineRepo
-            ctrl --> ui : vaccineList
-            ui --> SNSUser : shows the available vaccines
-        deactivate ctrl
-    deactivate ui
 
     SNSUser -> ui : selects a vaccine and schedules a date
     activate ui

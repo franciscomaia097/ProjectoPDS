@@ -20,20 +20,7 @@ activate Administrator
     activate ui
         ui -> ctrl** : create()
         ui -> ctrl : getExistingVaccines()
-        activate ctrl
-            ctrl -> Repositories : getVaccineRepo()
-            activate Repositories
-                Repositories -> Repositories : vaccineRepo()
-                Repositories-->ctrl : vaccineRepo
-            deactivate Repositories
-            ctrl -> vaccineRepo : getExistingVaccines()
-            activate vaccineRepo
-                vaccineRepo -> vaccineRepo : getExistingVaccines()
-                vaccineRepo --> ctrl : existingVaccines
-            deactivate vaccineRepo
-            ctrl --> ui : existingVaccines
-            ui --> Administrator : shows the existing Vaccines and requests data
-        deactivate ctrl
+
     deactivate ui
 
     Administrator -> ui : fills requested data (name, brand, type)

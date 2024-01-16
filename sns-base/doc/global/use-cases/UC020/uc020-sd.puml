@@ -16,25 +16,6 @@ participant "snsUser : SNSUser" as snsUser
 
 activate Administrator
 
-    Administrator -> ui : starts the process of registering a new SNS user
-    activate ui
-        ui -> ctrl** : create()
-        ui -> ctrl : getSNSUser(username)
-        activate ctrl
-            ctrl -> Repositories : getSNSUserRepository()
-            activate Repositories
-                Repositories -> Repositories : snsUserRepository()
-                Repositories-->ctrl : snsUserRepo
-            deactivate Repositories
-            ctrl -> snsUserRepo : getSNSUserByUsername(username)
-            activate snsUserRepo
-                snsUserRepo -> snsUserRepo : getSNSUserByUsername(username)
-                snsUserRepo --> ctrl : existingSNSUser
-            deactivate snsUserRepo
-            ctrl --> ui : existingSNSUser
-            ui --> Administrator : shows existing SNS User details or requests data
-        deactivate ctrl
-    deactivate ui
 
     Administrator -> ui : fills requested data (username)
     activate ui

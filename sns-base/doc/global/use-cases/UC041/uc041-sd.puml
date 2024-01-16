@@ -16,25 +16,6 @@ participant "vaccinationScheduleRepo : VaccinationScheduleRepository" as schedul
 
 activate Nurse
 
-    Nurse -> ui : record the administration of a vaccine to a user
-    activate ui
-        ui -> ctrl** : loadScheduledVaccinations()
-        activate ctrl
-            ctrl -> Repositories : getVaccinationScheduleRepository()
-            activate Repositories
-                Repositories -> Repositories : vaccinationScheduleRepository()
-                Repositories --> ctrl : scheduleRepo
-            deactivate Repositories
-            ctrl -> scheduleRepo : getScheduledVaccinations()
-            activate scheduleRepo
-                scheduleRepo -> scheduleRepo : getScheduledVaccinations()
-                scheduleRepo --> ctrl : scheduledVaccinations
-            deactivate scheduleRepo
-            ctrl --> ui : scheduledVaccinations
-            ui --> Nurse : displays the scheduled vaccinations
-        deactivate ctrl
-    deactivate ui
-
     Nurse -> ui : selects the vaccination that occurred
     activate ui
         ui -> ctrl : recordVaccineAdministration(selectedVaccination)
