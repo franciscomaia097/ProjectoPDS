@@ -5,19 +5,19 @@
 
 
 ENTITY VaccineType {
-    Code
+    Code [pk]
     ShortDescription
     VaccineTechnology
 }
 
 ENTITY Vaccine {
-    Id
+    Id [pk]
     Name
     Brand
 }
 
 ENTITY SNSUser {
-    Id
+    Id [pk]
     Name
     BirthDate
     Sex
@@ -42,10 +42,11 @@ ENTITY Receptionist {
 
 ENTITY Nurse {
     Name
+    VaccinationCenterId [fk]
 }
 
 ENTITY HealthCenter {
-     Id
+     Id [pk]
      Name
      Location
 }
@@ -54,50 +55,66 @@ ENTITY VaccineAppointment {
     Id
        DateTime
        Status
-    // Other attributes of VaccineAppointment
+    SNSUserId [fk]
+    VaccinationCenterId [fk]
+    CheckInId [fk]
 }
 
 
 ENTITY VaccinationCall {
 Status
+NurseId [fk]
+LocalId [fk]
+RegisterVaccinationId [fk]
 }
 
 
 ENTITY AdverseSymptomsRegister {
-Id
+    Id [pk]
     Symptoms
+    RegisterVaccinationId [fk]
 }
 
 ENTITY Lot {
- Id
+    Id [pk]
     Quantity
     ManufacturingDate
     ExpiryDate
+    VaccineId [fk]
 }
 
 ENTITY Local {
-Id
+    Id [pk]
     Name
 }
 
 ENTITY CheckIn {
-Status
+    Status
+    ReceptionistId [fk]
+    LocalId [fk]
+    VaccinationCallId [fk]
 }
 
 ENTITY WaitingRoom {
-Capacity
+    Capacity
+    LocalId [fk]
 }
 
 ENTITY VacinationRoom {
-Capacity
+    Capacity
+    LocalId [fk]
 }
 
 ENTITY RecoveryRoom {
-Capacity
+    Capacity
+    LocalId [fk]
 }
 
 ENTITY RegisterVacination {
-Id
+    Id [pk]
+    VaccinationAppointmentId [fk]
+    AdverseSymptomsRegisterId [fk]
+    VaccineId [fk]
 }
 
 
