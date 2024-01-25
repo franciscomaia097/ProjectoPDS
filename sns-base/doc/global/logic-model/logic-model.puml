@@ -121,11 +121,11 @@ ENTITY RegisterVacination {
 
 VaccinationCenter "*" -- "*" Nurse
 VaccinationCenter "*" -- "*" Receptionist
-VaccineAppointment "0..1" -- "0..1" CheckIn
+VaccineAppointment "0..1" -- "0..*" CheckIn
 VaccineAppointment "*" -- "1" SNSUser
 VaccineAppointment "*" -- "1" VaccinationCenter
 VaccinationCall "*" -- "1" Nurse
-VaccinationCall "1" -- "1" Local
+VaccinationCall "1" -- "0..*" Local
 VaccinationCall "1" -- "1" RegisterVacination
 RegisterVacination "1" -- "1" AdverseSymptomsRegister
 RegisterVacination "1" -- "1" Lot
