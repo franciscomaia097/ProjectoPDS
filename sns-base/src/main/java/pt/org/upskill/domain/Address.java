@@ -25,6 +25,11 @@ public class Address implements DTOable<AddressDTO> {
     }
 
     @Override
+    public String toString() {
+        return streetName + ", " + postalCode + ", " + cityName;
+    }
+
+    @Override
     public AddressDTO toDTO() {
         AddressDTO.Builder builder = new AddressDTO.Builder();
         if (streetName() != null) {
