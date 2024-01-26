@@ -22,7 +22,7 @@ public class Email implements DTOable {
     }
 
     @Override
-    public Object toDTO() {
+    public EmailDTO toDTO() {
         return new EmailDTO(address());
     }
 }

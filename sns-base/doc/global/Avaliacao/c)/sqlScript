@@ -22,6 +22,14 @@ CREATE TABLE SNSUser (
     SNSUserNumber VARCHAR2(255)
 );
 
+CREATE TABLE Employee (
+    id INT PRIMARY KEY,
+    email VARCHAR(255) UNIQUE,
+    name VARCHAR(255),
+    position VARCHAR(255),
+    phone VARCHAR(20)
+);
+
 CREATE TABLE VaccinationCenter (
     Id VARCHAR2(255),
     Name VARCHAR2(255),
