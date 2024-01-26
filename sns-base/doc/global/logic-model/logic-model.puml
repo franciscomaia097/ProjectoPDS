@@ -3,11 +3,13 @@
 !define ENTITY class
 !define ENDENTITY end class
 
-
+ENTITY VaccineTech{
+    name [pk]
+    description
+}
 ENTITY VaccineType {
     Code [pk]
     ShortDescription
-    VaccineTechnology
 }
 
 ENTITY Vaccine {
@@ -137,6 +139,7 @@ Vaccine "*" -- "1" VaccineType
 Local "0..1" -- "0..1" WaitingRoom
 Local "0..1" -- "0..1" VacinationRoom
 Local "0..1" -- "0..1" RecoveryRoom
+VaccineType "*" -- "1" VaccineTech
 HealthCenter "0..1" -- "0..1" VaccinationCenter
 
 

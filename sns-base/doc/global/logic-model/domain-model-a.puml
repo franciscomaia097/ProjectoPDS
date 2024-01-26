@@ -1,0 +1,98 @@
+@startuml
+
+class Secção {
+  Código: PK
+  Nome
+}
+class SecçãoManutenção {
+  Código: PK
+  Nome
+}
+
+class Funcionário {
+  Número Identificativo: PK
+  BI
+  Nome
+}
+
+class FuncionárioManutenção {
+  Número Identificativo: PK
+  BI
+  Nome
+}
+
+
+
+class Especialidade {
+  IdEspecialidade: PK
+  Nome
+}
+
+class PedidoDeManutenção {
+  Número Sequencial Identificativo: PK
+  Data e Hora de Envio
+  Funcionário Solicitante: FK FuncionárioManutenção
+  Secção de Origem: FK Secção
+}
+
+class Atividade {
+  Número: PK
+  Data de Início Estimada
+  Data de Fim Estimada
+  Funcionário Responsável: FK FuncionárioManutenção
+  Especialidade: FK Especialidade
+}
+
+class Alocar {
+  Atividade: FK Atividade
+  Funcionário: FK Funcionário
+}
+
+class Desvio {
+  Atividade: FK Atividade
+  Data de Início Efetiva
+  Data de Fim Efetiva
+}
+
+class Material {
+  Código: PK
+  Designação
+  Unidade de Medida
+  Categoria de Material: FK CategoriaMaterial
+}
+
+class CategoriaDeMaterial {
+  ID: PK
+  Nome
+}
+
+class Fornecedor {
+  Número de Contribuinte: PK
+  Nome da Empresa
+  Morada
+  Contacto
+}
+
+class Compra {
+  Atividade: FK Atividade
+  Fornecedor: FK Fornecedor
+  Material: FK Material
+  Quantidade Adquirida
+  Data de Aquisição
+  Preço
+}
+
+Secção "*" -- "*" Funcionário
+FuncionárioManutenção "*" -- "1" Especialidade
+FuncionárioManutenção "*" -- "1" SecçãoManutenção
+SecçãoManutenção "1" -- "*" Atividade
+Funcionário "1" -- "*" PedidoDeManutenção
+PedidoDeManutenção "*" -- "1" SecçãoManutenção
+Atividade "1" -- "*" Alocar
+Atividade "1" -- "1" Desvio
+Material "*" -- "1" CategoriaDeMaterial
+Material "*" -- "*" Compra
+Compra "*" -- "1" Fornecedor
+Atividade "*" -- "*" Material
+
+@enduml
