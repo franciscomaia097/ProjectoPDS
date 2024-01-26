@@ -1,0 +1,206 @@
+CREATE TABLE VaccineType (
+    Code VARCHAR2(255),
+    ShortDescription VARCHAR2(255),
+    VaccineTechnology VARCHAR2(255)
+);
+
+CREATE TABLE Vaccine (
+    Id VARCHAR2(255),
+    Name VARCHAR2(255),
+    Brand VARCHAR2(255)
+);
+
+CREATE TABLE SNSUser (
+    Id VARCHAR2(255),
+    Name VARCHAR2(255),
+    BirthDate DATE,
+    Sex VARCHAR2(10),
+    PostalAddress VARCHAR2(255),
+    PhoneNumber VARCHAR2(20),
+    EmailAddress VARCHAR2(255),
+    CitizenCardNumber VARCHAR2(20),
+    SNSUserNumber VARCHAR2(255)
+);
+
+CREATE TABLE VaccinationCenter (
+    Id VARCHAR2(255),
+    Name VARCHAR2(255),
+    Location VARCHAR2(255),
+    ContactInformation VARCHAR2(255),
+    Capacity NUMBER
+);
+
+CREATE TABLE Receptionist (
+    Id Varchar2(255),
+    Name VARCHAR2(255)
+);
+
+CREATE TABLE Nurse (
+    Name VARCHAR2(255),
+    VaccinationCenterId VARCHAR2(255)
+);
+
+CREATE TABLE HealthCenter (
+    Id VARCHAR2(255),
+    Name VARCHAR2(255),
+    Location VARCHAR2(255)
+);
+
+CREATE TABLE VaccineAppointment (
+    Id VARCHAR2(255),
+    DateTime TIMESTAMP,
+    Status VARCHAR2(50),
+    SNSUserId VARCHAR2(255),
+    VaccinationCenterId VARCHAR2(255),
+    CheckInId VARCHAR2(255)
+);
+
+CREATE TABLE VaccinationCall (
+    Id VARCHAR2(255),
+    Status VARCHAR2(50),
+    NurseId VARCHAR2(255),
+    LocalId VARCHAR2(255),
+    RegisterVaccinationId VARCHAR2(255)
+);
+
+CREATE TABLE AdverseSymptomsRegister (
+    Id VARCHAR2(255),
+    Symptoms VARCHAR2(255),
+    RegisterVaccinationId VARCHAR2(255)
+);
+
+CREATE TABLE Lot (
+    Id VARCHAR2(255),
+    Quantity NUMBER,
+    ManufacturingDate DATE,
+    ExpiryDate DATE,
+    VaccineId VARCHAR2(255)
+);
+
+CREATE TABLE Local (
+    Id VARCHAR2(255),
+    Name VARCHAR2(255)
+);
+
+CREATE TABLE CheckIn (
+    Id VARCHAR2(255),
+    Status VARCHAR2(50),
+    ReceptionistId VARCHAR2(255),
+    LocalId VARCHAR2(255),
+    VaccinationCallId VARCHAR2(255)
+);
+
+CREATE TABLE WaitingRoom (
+    Capacity NUMBER,
+    LocalId VARCHAR2(255)
+);
+
+CREATE TABLE VaccinationRoom (
+    Capacity NUMBER,
+    LocalId VARCHAR2(255)
+);
+
+CREATE TABLE RecoveryRoom (
+    Capacity NUMBER,
+    LocalId VARCHAR2(255)
+);
+
+CREATE TABLE RegisterVaccination (
+    Id VARCHAR2(255),
+    VaccinationAppointmentId VARCHAR2(255),
+    AdverseSymptomsRegisterId VARCHAR2(255),
+    VaccineId VARCHAR2(255)
+);
+
+-- Adicionar chaves estrangeiras usando ALTER TABLE
+-- VaccineType
+ALTER TABLE VaccineType ADD CONSTRAINT PK_VaccineType_Code PRIMARY KEY (Code);
+
+-- Vaccine
+ALTER TABLE Vaccine ADD CONSTRAINT PK_Vaccine_Id PRIMARY KEY (Id);
+
+-- SNSUser
+ALTER TABLE SNSUser ADD CONSTRAINT PK_SNSUser_Id PRIMARY KEY (Id);
+
+-- VaccinationCenter
+ALTER TABLE VaccinationCenter ADD CONSTRAINT PK_VaccinationCenter_Id PRIMARY KEY (Id);
+
+-- Receptionist
+ALTER TABLE Receptionist ADD CONSTRAINT PK_Receptionist_Id PRIMARY KEY (Id);
+
+
+-- Nurse
+-- No primary key specified in the UML for Nurse
+
+-- HealthCenter
+ALTER TABLE HealthCenter ADD CONSTRAINT PK_HealthCenter_Id PRIMARY KEY (Id);
+
+-- VaccineAppointment
+ALTER TABLE VaccineAppointment ADD CONSTRAINT PK_VaccineAppointment_Id PRIMARY KEY (Id);
+
+-- VaccinationCall
+ALTER TABLE VaccinationCall ADD CONSTRAINT PK_VaccinationCall_Id PRIMARY KEY (Id);
+
+-- AdverseSymptomsRegister
+ALTER TABLE AdverseSymptomsRegister ADD CONSTRAINT PK_AdverseSymptomsRegister_Id PRIMARY KEY (Id);
+
+-- Lot
+ALTER TABLE Lot ADD CONSTRAINT PK_Lot_Id PRIMARY KEY (Id);
+
+-- Local
+ALTER TABLE Local ADD CONSTRAINT PK_Local_Id PRIMARY KEY (Id);
+
+-- CheckIn
+ALTER TABLE CheckIn ADD CONSTRAINT PK_CheckIn_Id PRIMARY KEY (Id);
+
+
+-- WaitingRoom
+ALTER TABLE WaitingRoom ADD CONSTRAINT FK_WaitingRoom_LocalId FOREIGN KEY (LocalId) REFERENCES Local(Id);
+
+-- VacinationRoom
+ALTER TABLE VaccinationRoom ADD CONSTRAINT FK_VacinationRoom_LocalId FOREIGN KEY (LocalId) REFERENCES Local(Id);
+
+-- RecoveryRoom
+ALTER TABLE RecoveryRoom ADD CONSTRAINT FK_RecoveryRoom_LocalId FOREIGN KEY (LocalId) REFERENCES Local(Id);
+
+-- RegisterVacination
+ALTER TABLE RegisterVaccination ADD CONSTRAINT PK_RegisterVaccination_Id PRIMARY KEY (Id);
+
+
+-- Adicionar chaves estrangeiras conforme necessário
+ALTER TABLE VaccineAppointment ADD CONSTRAINT FK_VaccineAppointment_SNSUserId FOREIGN KEY (SNSUserId) REFERENCES SNSUser(Id);
+ALTER TABLE VaccineAppointment ADD CONSTRAINT FK_VaccineAppointment_VaccinationCenterId FOREIGN KEY (VaccinationCenterId) REFERENCES VaccinationCenter(Id);
+ALTER TABLE VaccineAppointment ADD CONSTRAINT FK_VaccineAppointment_CheckInId FOREIGN KEY (CheckInId) REFERENCES CheckIn(Id);
+
+ALTER TABLE AdverseSymptomsRegister ADD CONSTRAINT FK_AdverseSymptomsRegister_RegisterVaccinationId FOREIGN KEY (RegisterVaccinationId) REFERENCES RegisterVaccination(Id);
+
+ALTER TABLE Lot ADD CONSTRAINT FK_Lot_VaccineId FOREIGN KEY (VaccineId) REFERENCES Vaccine(Id);
+
+ALTER TABLE CheckIn ADD CONSTRAINT FK_CheckIn_ReceptionistId FOREIGN KEY (ReceptionistId) REFERENCES Receptionist(Id);
+ALTER TABLE CheckIn ADD CONSTRAINT   FK_CheckIn_LocalId FOREIGN KEY (LocalId) REFERENCES Local(Id);
+ALTER TABLE CheckIn ADD CONSTRAINT FK_CheckIn_VaccinationCallId FOREIGN KEY (VaccinationCallId) REFERENCES VaccinationCall(Id);
+
+ALTER TABLE RegisterVaccination ADD CONSTRAINT FK_RegisterVaccination_VaccinationAppointmentId FOREIGN KEY (VaccinationAppointmentId) REFERENCES VaccineAppointment(Id);
+ALTER TABLE RegisterVaccination ADD CONSTRAINT FK_RegisterVaccination_AdverseSymptomsRegisterId FOREIGN KEY (AdverseSymptomsRegisterId) REFERENCES AdverseSymptomsRegister(Id);
+ALTER TABLE RegisterVaccination ADD CONSTRAINT FK_RegisterVaccination_VaccineId FOREIGN KEY (VaccineId) REFERENCES Lot(Id);
+
+
+-- Drop das tabelas em ordem inversa para evitar conflitos de chaves estrangeiras
+
+DROP TABLE CheckIn cascade constraints;
+DROP TABLE RecoveryRoom cascade constraints;
+DROP TABLE VaccinationRoom cascade constraints;
+DROP TABLE WaitingRoom cascade constraints;
+DROP TABLE RegisterVaccination cascade constraints;
+DROP TABLE Local cascade constraints;
+DROP TABLE Lot cascade constraints;
+DROP TABLE AdverseSymptomsRegister cascade constraints;
+DROP TABLE VaccinationCall cascade constraints;
+DROP TABLE VaccineAppointment cascade constraints;
+DROP TABLE HealthCenter cascade constraints;
+DROP TABLE Nurse cascade constraints;
+DROP TABLE Receptionist cascade constraints;
+DROP TABLE VaccinationCenter cascade constraints;
+DROP TABLE SNSUser cascade constraints;
+DROP TABLE Vaccine cascade constraints;
+DROP TABLE VaccineType cascade constraints;
