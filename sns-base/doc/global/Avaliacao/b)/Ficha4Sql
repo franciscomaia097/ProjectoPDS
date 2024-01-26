@@ -1,0 +1,200 @@
+Exercicio 1:
+
+SELECT Empregado.idempregado, EmpregadoEfetivo.idempregado as idempregado_efetivo
+FROM Empregado
+CROSS JOIN EmpregadoEfetivo
+ORDER BY Empregado.idempregado ASC, EmpregadoEfetivo.idempregado ASC;
+
+Exercicio 2:
+SELECT
+  Empregado.idempregado,
+  Empregado.nome,
+  Empregado.datanascimento,
+  Empregado.nridentificacaocivil,
+  Empregado.nif,
+  EmpregadoEfetivo.salariomensalbase
+FROM
+  Empregado
+JOIN
+  EmpregadoEfetivo ON Empregado.idempregado = EmpregadoEfetivo.idempregado
+ORDER BY
+  Empregado.nome ASC;
+
+  Exercicio 3:
+  SELECT
+    EE.idempregado,
+    F.datainicio,
+    F.datafim,
+    F.justificacao
+  FROM
+    EmpregadoEfetivo EE
+  JOIN
+    Falta F ON EE.idempregado = F.idempregado;
+
+Exercicio 3:
+
+SELECT
+  EE.idempregado,
+  F.datainicio,
+  F.datafim,
+  F.justificacao
+FROM
+  EmpregadoEfetivo EE
+JOIN
+  Falta F ON EE.idempregado = F.idempregado;
+
+
+Exercicio 4:
+SELECT
+  E.nome,
+  E.nridentificacaocivil,
+  F.idempregado,
+  F.datainicio,
+  F.datafim,
+  F.justificacao
+FROM
+  EmpregadoTemporario ET
+JOIN
+  Falta F ON ET.idempregado = F.idempregado
+JOIN
+  Empregado E ON ET.idempregado = E.idempregado;
+
+Exercicio 5
+SELECT DISTINCT
+    E.nome,
+    E.nrIdentificacaoCivil,
+    ET.idEmpregado,
+    AT.idDepartamento,
+    ED.dataInicio AS DataInicio,
+    ED.dataFim AS DataFim,
+    A.descricao
+FROM
+    empregado E
+    JOIN empregadoTemporario ET ON E.idEmpregado = ET.idEmpregado
+    JOIN avaliacaoTemporario AT ON ET.idEmpregado = AT.idEmpregado
+    JOIN avaliacao A ON AT.idAvaliacao = A.idAvaliacao
+    JOIN empregadoDepartamento ED ON ET.idEmpregado = ED.idEmpregado AND AT.idDepartamento = ED.idDepartamento;
+
+EXERCICIO 6
+
+SELECT
+    E.nome,
+    E.nrIdentificacaoCivil
+FROM
+    empregado E
+LEFT JOIN falta F ON E.idEmpregado = F.idEmpregado
+WHERE
+    F.idEmpregado IS NULL;
+
+EXERCICIO 7
+
+SELECT
+    D1.idDepartamento AS IdDepartamento,
+    D1.designacao AS DesignacaoDepartamento,
+    D2.designacao AS DesignacaoDepartamentoSuperior
+FROM
+    departamento D1
+LEFT JOIN departamento D2 ON D1.idDepartamentoSuperior = D2.idDepartamento
+ORDER BY
+    D1.designacao DESC;
+
+EXERCICIO 8 ?????????????????????
+SELECT
+    E1.idEmpregado AS IdEmpregadoMaisNovo,
+    E1.nome AS NomeEmpregadoMaisNovo,
+    E2.idEmpregado AS IdEmpregadoMaisVelho,
+    E2.nome AS NomeEmpregadoMaisVelho
+FROM
+    empregado E1
+JOIN
+    empregado E2 ON E1.idEmpregado < E2.idEmpregado
+WHERE
+    E1.dataNascimento <> E2.dataNascimento
+ORDER BY
+    E1.idEmpregado, E2.idEmpregado;
+
+
+EXERCICIO B) 1 -
+
+SELECT DISTINCT
+    E.nome,
+    E.nrIdentificacaoCivil
+FROM
+    empregado E
+WHERE
+    E.idEmpregado IN (
+        SELECT idEmpregado
+        FROM avaliacaoEfetivo
+        WHERE idAvaliacao = 'MB'
+        UNION
+        SELECT idEmpregado
+        FROM avaliacaoTemporario
+        WHERE idAvaliacao = 'MB'
+    );
+
+
+B) 2-
+
+
+SELECT
+    A.descricao
+FROM
+    avaliacao A
+WHERE
+    EXISTS (
+        SELECT 1
+        FROM
+            avaliacaoEfetivo AE
+        WHERE
+            A.idAvaliacao = AE.idAvaliacao
+    )
+    AND EXISTS (
+        SELECT 1
+        FROM
+            avaliacaoTemporario AT
+        WHERE
+            A.idAvaliacao = AT.idAvaliacao
+    );
+
+
+B) 3-
+
+SELECT
+    E.nome,
+    E.nrIdentificacaoCivil
+FROM
+    empregado E
+JOIN
+    empregadoEfetivo EE ON E.idEmpregado = EE.idEmpregado
+WHERE
+    NOT EXISTS (
+        SELECT 1
+        FROM
+            avaliacaoEfetivo AE
+        WHERE
+            E.idEmpregado = AE.idEmpregado
+            AND AE.idAvaliacao <> 'MB'
+    );
+
+
+B) 4-
+
+SELECT
+    E.nome,
+    E.nrIdentificacaoCivil
+FROM
+    empregado E
+JOIN
+    empregadoEfetivo EE ON E.idEmpregado = EE.idEmpregado
+WHERE
+    NOT EXISTS (
+        SELECT 1
+        FROM
+            ferias F
+        WHERE
+            E.idEmpregado = F.idEmpregado
+            AND (F.dataFim - F.dataInicio) <= 15
+    )
+ORDER BY
+    E.nome;
+
